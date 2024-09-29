@@ -92,7 +92,7 @@ public class TaiKhoanBUS {
         switch (type) {
             case "Tất cả":
                 for(TaiKhoanDTO i : tkList){
-                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || i.getTenTaiKhoan().contains(text) || i.getMatKhau().contains(text) || nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text) || qBUS.getNameById(i.getIdQuyen()).toLowerCase().contains(text))
+                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || i.getTenTaiKhoan().contains(text) || nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text) || qBUS.getNameById(i.getIdQuyen()).toLowerCase().contains(text))
                         result.add(i);
                 }
                 break;
@@ -120,12 +120,6 @@ public class TaiKhoanBUS {
             case "Tên tài khoản":
                 for(TaiKhoanDTO i : tkList){
                     if(i.getTenTaiKhoan().contains(text))
-                        result.add(i);
-                }
-                break;
-            case "Mật khẩu":
-                for(TaiKhoanDTO i : tkList){
-                    if(i.getMatKhau().contains(text))
                         result.add(i);
                 }
                 break;

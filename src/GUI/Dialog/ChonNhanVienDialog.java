@@ -5,6 +5,7 @@
 package GUI.Dialog;
 
 import BUS.NhanVienBUS;
+import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ChonNhanVienDialog extends javax.swing.JDialog {
 
-    public NhanVienBUS nvBUS = new NhanVienBUS();
-    public ArrayList<NhanVienDTO> nhanVienList = nvBUS.getAll();
+    public NhanVienDAO nvDAO = new NhanVienDAO();
+    public ArrayList<NhanVienDTO> nhanVienList = nvDAO.selectAllWithoutAccount();
     private DefaultTableModel tableModel;
     
     public ChonNhanVienDialog(java.awt.Frame parent, boolean modal) {

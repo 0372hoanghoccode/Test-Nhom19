@@ -105,8 +105,8 @@ public class TaiKhoanDialog extends javax.swing.JDialog {
     
     public boolean ValidateDuplication(){
         for(TaiKhoanDTO i : tkBUS.getAll()){
-            if(i.getTenTaiKhoan().equals(txtTenNhanVien.getText()) && nvBUS.getNameByID(i.getIdNhanVien()).equals(txtTenNhanVien.getText())){
-                JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc tên nhân viên đã tồn tại!");
+            if(i.getTenTaiKhoan().equals(txtTenTaiKhoan.getText())){
+                JOptionPane.showMessageDialog(this, "Tên tài khoản đã tồn tại!");
                 return false;
             }
         }
@@ -321,7 +321,7 @@ public class TaiKhoanDialog extends javax.swing.JDialog {
             this.nhanVien = nvBUS.getObjectById(idNv);
             txtTenNhanVien.setText(this.nhanVien.getHo()+" "+this.nhanVien.getTen());
         } catch (Exception e) {
-          System.out.println(e);  
+//          System.out.println(e);  
         }
     }//GEN-LAST:event_chonNVBtnMousePressed
 

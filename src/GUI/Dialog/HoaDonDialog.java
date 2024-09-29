@@ -420,7 +420,7 @@ public class HoaDonDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "STT", "IMEI", "Tên sản phẩm", "RAM", "ROM", "Màu", "Bảo hành đến", "Giá bán", "Giá khuyến mãi"
+                "STT", "IMEI", "Tên sản phẩm", "RAM", "ROM", "Màu", "Bảo hành đến", "Giá bán", "Giá sau khi khuyến mãi"
             }
         ) {
             boolean[] canEdit = new boolean [] {

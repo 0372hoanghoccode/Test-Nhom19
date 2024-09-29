@@ -44,7 +44,7 @@ public class Validator {
         if(phoneNum == null) {
             return false;
         }
-        String phoneNumRegex = "^(?:[0-9]●?){6,14}[0-9]$";
+        String phoneNumRegex = "^0[0-9]{9}$";
         Pattern pattern = Pattern.compile(phoneNumRegex);
         return pattern.matcher(phoneNum).matches();
     }

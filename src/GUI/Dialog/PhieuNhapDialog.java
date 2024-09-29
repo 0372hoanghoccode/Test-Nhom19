@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -53,6 +54,7 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
     private String mode;
     private PhieuNhap pnPanel;
     private Main main;
+    private HashMap<Integer, String> imeiList = new HashMap<>();
     
     private ArrayList<CTSanPhamDTO> newCTSPList = new ArrayList<>();
     
@@ -183,34 +185,36 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
     public String getImei(ArrayList<CTSanPhamDTO> ctsp,int soLuong){
         boolean inputAccepted = false; 
         String result = "";
-        while(!inputAccepted){
-                String input = JOptionPane.showInputDialog("Nhập IMEI cho lô sản phẩm này");
-                if(input == null)
-                    return "";
-                Pattern pattern = Pattern.compile("^[1-9]{1}[0-9]{14}$", Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(input);
-                boolean matchFound = matcher.find();
-                if(!matchFound){
-                    JOptionPane.showMessageDialog(this, "Imei phải là số có 15 chữ số và không bắt đầu bằng số 0");
-                }else{
-                    inputAccepted = true;
-                    //check imei exsited
-                    
-                 for(int i=0; i<soLuong; i++) {
+        while (!inputAccepted) {
+            String input = JOptionPane.showInputDialog("Nhập IMEI cho lô sản phẩm này");
+            if (input == null) {
+                return "";
+            }
+            Pattern pattern = Pattern.compile("^[1-9]{1}[0-9]{14}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(input);
+            boolean matchFound = matcher.find();
+            if (!matchFound) {
+                JOptionPane.showMessageDialog(this, "Imei phải là số có 15 chữ số và không bắt đầu bằng số 0");
+            } else {
+                inputAccepted = true;
+                //check imei exsited
+
+                for (int i = 0; i < soLuong; i++) {
                     String newimei = String.valueOf(Long.parseLong(input) + i);
-                    for(CTSanPhamDTO j : ctsp){
-                        if(j.getImei().equals(newimei)){
+                    for (CTSanPhamDTO j : ctsp) {
+                        if (j.getImei().equals(newimei)) {
                             JOptionPane.showMessageDialog(this, "Imei '" + newimei + "' đã tồn tại");
                             inputAccepted = false;
                             break;
                         }
-                    if(!inputAccepted)
-                        break;
-                }
+                        if (!inputAccepted)
+                            break;
                     }
-                    if(inputAccepted)
-                        return input;
-                } 
+                }
+                
+                if (inputAccepted)
+                    return input;
+            }
         }
         
         
@@ -238,8 +242,21 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
         txtTt.setText(Formatter.FormatVND(getTongTien()));
     }
     
+    public void generateNewCTSPList() {
+        for (CTPhieuNhapDTO i : this.newCTPNList) {
+            String imei = imeiList.get(i.getIdPBSanPham());
+            PhienBanSanPhamDTO pbsp = pbspBUS.getObjectById(i.getIdPBSanPham());
+            for (int j = 0; j < i.getSoLuong(); j++) {
+                String newimei = String.valueOf(Long.parseLong(imei) + j);
+                CTSanPhamDTO newCTSP = new CTSanPhamDTO(newimei, pbsp.getIdSanPham(), pbsp.getId(), this.newPNId, i.getDonGia(), 1);
+                this.newCTSPList.add(newCTSP);
+            }
+        }
+    }
+    
     public void addPNEvent() {
         newPhieuNhap = getNewPN();
+        generateNewCTSPList();
         if (pnPanel.pnBUS.addNewPNWithCTSPList(newPhieuNhap, newCTPNList, newCTSPList)) {
             JOptionPane.showMessageDialog(this, "Nhập hàng thành công !");
             dispose();
@@ -452,7 +469,7 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
                         .addComponent(suaSLBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(xoaSPBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
                         .addComponent(nhapHangBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -543,12 +560,13 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
                 if (giaNhap == 0)
                     return;
                 String imei = getImei(newCTSPList,soLuong);
-                PhienBanSanPhamDTO pbsp = pbspBUS.getObjectById(pbspId);
-                for(int i=0; i<soLuong; i++) {
-                    String newimei = String.valueOf(Long.parseLong(imei) + i);
-                    CTSanPhamDTO newCTSP = new CTSanPhamDTO(newimei, pbsp.getIdSanPham(), pbspId, this.newPNId, giaNhap, 1);
-                    this.newCTSPList.add(newCTSP);
-                }
+//                PhienBanSanPhamDTO pbsp = pbspBUS.getObjectById(pbspId);
+                this.imeiList.put(pbspId, imei);
+//                for(int i=0; i<soLuong; i++) {
+//                    String newimei = String.valueOf(Long.parseLong(imei) + i);
+//                    CTSanPhamDTO newCTSP = new CTSanPhamDTO(newimei, pbsp.getIdSanPham(), pbspId, this.newPNId, giaNhap, 1);
+//                    this.newCTSPList.add(newCTSP);
+//                }
                 
                 this.tongTien += (long) giaNhap*soLuong;
                 newCTPNList.add(new CTPhieuNhapDTO(this.newPNId, pbspId, soLuong, giaNhap, (long) giaNhap*soLuong));

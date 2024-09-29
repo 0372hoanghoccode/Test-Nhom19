@@ -62,7 +62,7 @@ public class CTSanPhamDAO {
                 pst.setInt(4, ctspList.get(i).getIdPhieuNhap());
                 pst.setLong(5, ctspList.get(i).getGiaNhap());
                 result = pst.executeUpdate();
-                PhienBanSanPhamDAO.getInstance().giamSoLuong(ctspList.get(i).getIdPBSanPham(), 1);
+//                PhienBanSanPhamDAO.getInstance().giamSoLuong(ctspList.get(i).getIdPBSanPham(), 1);
                 DBConnector.closeConnection(con);
             } catch (SQLException ex) {
                 Logger.getLogger(CTPhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);

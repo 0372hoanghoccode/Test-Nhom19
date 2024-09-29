@@ -58,9 +58,6 @@ public class PhieuNhapBUS {
             phieuNhapList.add(pn);
             ctpnDAO.insert(ctpnList);
             ctspDAO.insert(ctspList);
-            for(CTPhieuNhapDTO i : ctpnList) {
-                pbspDAO.tangSoLuong(i.getIdPBSanPham(), i.getSoLuong());
-            }
             return true;
         }
         return false;

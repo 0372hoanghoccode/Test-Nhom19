@@ -94,8 +94,8 @@ public class NhaCungCap extends javax.swing.JPanel implements ActionListener {
             toolBar.add(themBtn);
         if(qBUS.checkQuyen(ctqList, 6, "edit"))
             toolBar.add(suaBtn);
-        if(qBUS.checkQuyen(ctqList, 6, "delete"))
-            toolBar.add(xoaBtn);
+//        if(qBUS.checkQuyen(ctqList, 6, "delete"))
+//            toolBar.add(xoaBtn);
         chiTietBtn.addActionListener(this);
         themBtn.addActionListener(this);
         suaBtn.addActionListener(this);

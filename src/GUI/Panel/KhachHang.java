@@ -100,8 +100,8 @@ public class KhachHang extends javax.swing.JPanel implements ActionListener {
             toolBar.add(themBtn);
         if (qBUS.checkQuyen(ctqList, 4, "edit"))
             toolBar.add(suaBtn);
-        if (qBUS.checkQuyen(ctqList, 4, "delete"))
-            toolBar.add(xoaBtn);
+//        if (qBUS.checkQuyen(ctqList, 4, "delete"))
+//            toolBar.add(xoaBtn);
         chiTietBtn.addActionListener(this);
         themBtn.addActionListener(this);
         suaBtn.addActionListener(this);

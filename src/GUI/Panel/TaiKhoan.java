@@ -70,7 +70,7 @@ public class TaiKhoan extends javax.swing.JPanel implements ActionListener {
     }
 
     public void initComponentsCustom() {
-        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Tên nhân viên", "Quyền", "Tên tài khoản", "Mật khẩu"});
+        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Tên nhân viên", "Quyền", "Tên tài khoản"});
         searchBar.txtSearch.addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(KeyEvent e) {
@@ -111,6 +111,7 @@ public class TaiKhoan extends javax.swing.JPanel implements ActionListener {
     
     public void loadDataToTable(ArrayList<TaiKhoanDTO> tkList) {
         tableModel.setRowCount(0);
+        nvBUS.nhanVienList = nvBUS.getAll();
         for(TaiKhoanDTO i : tkList) {
             tableModel.addRow(new Object[]{
                 i.getId(), 
