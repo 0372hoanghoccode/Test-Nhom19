@@ -6,7 +6,7 @@ package GUI.Panel;
 
 import BUS.CTSanPhamBUS;
 import BUS.ChucNangBUS;
-import GUI.Component.SearchBar;
+import GUI.Component.SearchBar1;
 import GUI.Component.ToolBarButton;
 import GUI.Main;
 import java.awt.BorderLayout;
@@ -60,7 +60,7 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
     public PhienBanSanPhamDAO pbspDAO = new PhienBanSanPhamDAO();
     public ArrayList<HoaDonDTO> hoaDonList = hdBUS.getAll();
     public Main main;
-    public SearchBar searchBar;
+    public SearchBar1 searchBar1;
     ToolBarButton chiTietBtn = new ToolBarButton("Chi tiết", "toolBar_detail.svg", "detail");
     ToolBarButton themBtn = new ToolBarButton("Thêm", "toolBar_add.svg", "add");
     ToolBarButton xoaBtn = new ToolBarButton("Hủy", "toolBar_delete.svg", "delete");
@@ -87,25 +87,25 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
     }
 
     public void initComponentsCustom() {
-        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Khách hàng", "Nhân viên", "Khuyến mãi", "Tổng tiền", "Ngày xuất"});
-        searchBar.txtSearch.addKeyListener(new KeyAdapter() {
+        searchBar1 = new SearchBar1(new String[]{"Tất cả", "Mã", "Khách hàng", "Nhân viên", "Khuyến mãi", "Tổng tiền", "Ngày xuất"});
+        searchBar1.txtSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 searchEvent();
             }
         });
-        searchBar.lamMoiBtn.addMouseListener(new MouseAdapter() {
+        searchBar1.lamMoiBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 reloadEvent();
             }
         });
-        searchBar.cbxType.addItemListener(new ItemListener() {
+        searchBar1.cbxType.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 searchEvent();
             }
         });
-        topPanel.add(searchBar, BorderLayout.CENTER);
+        topPanel.add(searchBar1, BorderLayout.CENTER);
         toolBar.add(chiTietBtn);
         if(qBUS.checkQuyen(ctqList, 3, "add"))
             toolBar.add(themBtn);
@@ -136,13 +136,13 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
     }
     
     public void reloadEvent() {
-        searchBar.txtSearch.setText("");
+        searchBar1.txtSearch.setText("");
         loadDataToTable(hoaDonList);
     }
     
     public void searchEvent(){
-        String searchText = searchBar.txtSearch.getText();
-        loadDataToTable(hdBUS.search(searchText,(String) searchBar.cbxType.getSelectedItem()));
+        String searchText = searchBar1.txtSearch.getText();
+        loadDataToTable(hdBUS.search(searchText,(String) searchBar1.cbxType.getSelectedItem()));
     }
 
     /**
