@@ -87,6 +87,8 @@ public class HoaDonDAO {
         }
         return result;
     }
+
+    
         
     public int getAutoIncrement(){
         int result = -1;
