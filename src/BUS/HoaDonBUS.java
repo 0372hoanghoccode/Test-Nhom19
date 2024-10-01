@@ -130,6 +130,7 @@ public class HoaDonBUS {
         ArrayList<HoaDonDTO> result = new ArrayList<>();
     
         for (HoaDonDTO hoaDon : hoaDonList) {
+         //   System.out.print("hell");
             if (hoaDon.getTongTien() >= start && hoaDon.getTongTien() <= end) {
                 result.add(hoaDon);
             }

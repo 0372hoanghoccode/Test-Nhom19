@@ -40,7 +40,11 @@ import com.kitfox.svg.A;
 import java.util.ArrayList;
 import helper.Formatter;
 import helper.JTableExporter;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.IOException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -100,11 +104,60 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
                 reloadEvent();
             }
         });
-        searchBar1.cbxType.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
+searchBar1.cbxType.addItemListener(new ItemListener() {
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            String selectedItem = (String) searchBar1.cbxType.getSelectedItem();
+            
+            if (selectedItem.equals("Tổng tiền")) {
+                // Hiển thị hai TextField "giatritu" và "giatriden"
+                searchBar1.searchTongTien.giatritu().setEnabled(true);
+                searchBar1.searchTongTien.giatriden().setEnabled(true);
+            } else {
+                // Gọi hàm tìm kiếm khác khi loại tìm kiếm không phải là "Tổng tiền"
                 searchEvent();
             }
-        });
+        }
+    }
+});
+searchBar1.searchTongTien.giatritu().getDocument().addDocumentListener(new DocumentListener() {
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+});
+
+searchBar1.searchTongTien.giatriden().getDocument().addDocumentListener(new DocumentListener() {
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        performSearchByTotalAmount();
+    }
+});
+
+
+
+
         topPanel.add(searchBar1, BorderLayout.CENTER);
         toolBar.add(chiTietBtn);
         if(qBUS.checkQuyen(ctqList, 3, "add"))
@@ -120,7 +173,27 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
         tableModel = (DefaultTableModel) hdTable.getModel();
         xoaBtn.setVisible(false);
     }
+private void performSearchByTotalAmount() {
+    String giatritu = searchBar1.searchTongTien.giatritu().getText();
+    String giatriden = searchBar1.searchTongTien.giatriden().getText();
 
+    int giaTriTu = 0;
+    int giaTriDen = Integer.MAX_VALUE;
+
+    try {
+        if (!giatritu.isEmpty()) {
+            giaTriTu = Integer.parseInt(giatritu);
+        }
+        if (!giatriden.isEmpty()) {
+            giaTriDen = Integer.parseInt(giatriden);
+        }
+
+        loadDataToTable(hdBUS.searchByTotalAmount(giaTriTu, giaTriDen));
+    } catch (NumberFormatException ex) {
+        // Xử lý ngoại lệ nếu giatritu hoặc giatriden không phải là số nguyên
+        System.out.println("Giá trị nhập không hợp lệ: " + ex.getMessage());
+    }
+}
     public void loadDataToTable(ArrayList<HoaDonDTO> hdList) {
         tableModel.setRowCount(0);
         for (HoaDonDTO i : hdList) {
@@ -141,8 +214,10 @@ public class HoaDon extends javax.swing.JPanel implements ActionListener {
     }
     
     public void searchEvent(){
+       
         String searchText = searchBar1.txtSearch.getText();
         loadDataToTable(hdBUS.search(searchText,(String) searchBar1.cbxType.getSelectedItem()));
+        
     }
 
     /**

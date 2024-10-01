@@ -20,7 +20,7 @@ public class SearchTongTien extends javax.swing.JPanel {
     }
    
     @SuppressWarnings("unchecked")
-// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
 private void initComponents() {
 
     jLabel1 = new javax.swing.JLabel();
@@ -81,6 +81,16 @@ private void initComponents() {
     );
 }
 
+public JTextField tu ; 
+public  JTextField giatritu(){
+    tu = jTextField1;
+    return tu;
+}
+public JTextField den ; 
+public  JTextField giatriden(){
+    den = jTextField2;bear
+    return den;
+}
 
 private void validateAndFilter() {
     String startAmount = jTextField1.getText();
@@ -114,6 +124,10 @@ private void validateAndFilter() {
     }
 }
 
+    /**
+     *
+     */
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
