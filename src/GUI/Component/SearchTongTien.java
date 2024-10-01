@@ -88,7 +88,7 @@ public  JTextField giatritu(){
 }
 public JTextField den ; 
 public  JTextField giatriden(){
-    den = jTextField2;bear
+    den = jTextField2;
     return den;
 }
 

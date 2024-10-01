@@ -11,6 +11,7 @@ import DTO.CTBaoHanhDTO;
 import DTO.KhachHangDTO;
 import helper.Formatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Class xử lý logic liên quan đến hóa đơn
@@ -132,6 +133,22 @@ public class HoaDonBUS {
         for (HoaDonDTO hoaDon : hoaDonList) {
          //   System.out.print("hell");
             if (hoaDon.getTongTien() >= start && hoaDon.getTongTien() <= end) {
+                result.add(hoaDon);
+            }
+        }
+    
+        return result;
+    }
+
+    public ArrayList<HoaDonDTO> searchByDateRange(Date startDate, Date endDate) {
+        ArrayList<HoaDonDTO> result = new ArrayList<>();
+    
+        for (HoaDonDTO hoaDon : hoaDonList) {
+            System.out.print("tim tu ngay den ngay test");
+            Date ngayXuat = hoaDon.getNgayXuat(); // Lấy ngày xuất của hóa đơn
+            
+            // Kiểm tra nếu ngày xuất nằm trong khoảng từ ngày bắt đầu đến ngày kết thúc
+            if (ngayXuat.compareTo(startDate) >= 0 && ngayXuat.compareTo(endDate) <= 0) {
                 result.add(hoaDon);
             }
         }

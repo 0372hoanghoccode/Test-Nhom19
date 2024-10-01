@@ -14,7 +14,8 @@ import java.awt.BorderLayout;
  */
 public class SearchBar1 extends javax.swing.JPanel {
     public SearchTongTien searchTongTien = new SearchTongTien();
-    SearchDaytoDay searchDaytoDay = new SearchDaytoDay();
+    // SearchDaytoDay searchDaytoDay = new SearchDaytoDay();
+    public SearchDaytoDay searchDaytoDay = new SearchDaytoDay();
     /**
      * Creates new form SearchBar
      */

@@ -19,6 +19,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import GUI.Dialog.HoaDonDialog;
@@ -45,6 +48,7 @@ import java.awt.event.FocusEvent;
 import java.io.IOException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.Date;
 
 /**
  *
@@ -114,7 +118,12 @@ searchBar1.cbxType.addItemListener(new ItemListener() {
                 // Hiển thị hai TextField "giatritu" và "giatriden"
                 searchBar1.searchTongTien.giatritu().setEnabled(true);
                 searchBar1.searchTongTien.giatriden().setEnabled(true);
-            } else {
+            }
+            else if (selectedItem.equals("Ngày xuất")) {
+                searchBar1.searchDaytoDay.giatritu().setEnabled(true);
+                searchBar1.searchDaytoDay.giatriden().setEnabled(true);
+            }
+             else {
                 // Gọi hàm tìm kiếm khác khi loại tìm kiếm không phải là "Tổng tiền"
                 searchEvent();
             }
@@ -157,6 +166,19 @@ searchBar1.searchTongTien.giatriden().getDocument().addDocumentListener(new Docu
 
 
 
+searchBar1.searchDaytoDay.giatritu().addPropertyChangeListener("date", new PropertyChangeListener() {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        performSearchByDateRange(); 
+    }
+});
+
+searchBar1.searchDaytoDay.giatriden().addPropertyChangeListener("date", new PropertyChangeListener() {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        performSearchByDateRange(); 
+    }
+});
 
         topPanel.add(searchBar1, BorderLayout.CENTER);
         toolBar.add(chiTietBtn);
@@ -194,6 +216,27 @@ private void performSearchByTotalAmount() {
         System.out.println("Giá trị nhập không hợp lệ: " + ex.getMessage());
     }
 }
+
+private void performSearchByDateRange() {
+    Date startDate = searchBar1.searchDaytoDay.giatritu().getDate();
+    Date endDate = searchBar1.searchDaytoDay.giatriden().getDate();
+
+    // Kiểm tra xem có chọn ngày bắt đầu và ngày kết thúc hay không
+    if (startDate == null || endDate == null) {
+        System.out.println("Vui lòng chọn cả hai ngày.");
+        return;
+    }
+
+    // Kiểm tra xem ngày bắt đầu có trước ngày kết thúc không
+    if (startDate.after(endDate)) {
+        System.out.println("Ngày bắt đầu phải trước ngày kết thúc.");
+        return;
+    }
+
+    // Gọi hàm tìm kiếm theo khoảng ngày
+    loadDataToTable(hdBUS.searchByDateRange(startDate, endDate));
+}
+
     public void loadDataToTable(ArrayList<HoaDonDTO> hdList) {
         tableModel.setRowCount(0);
         for (HoaDonDTO i : hdList) {
