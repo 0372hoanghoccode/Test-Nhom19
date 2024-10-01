@@ -7,7 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
-import javax.swing.GroupLayout;
+
 import java.util.Date;
 
 
@@ -102,39 +102,36 @@ public  JDateChooser giatriden(){
     private void validateAndFilter() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try {
-            // Lấy ngày từ jDateChooser
             Date startDateObj = jDateChooser1.getDate();
             Date endDateObj = jDateChooser2.getDate();
             
-            if (startDateObj == null && endDateObj == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu và ngày kết thúc.", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return; 
-            }
-            
-            if (startDateObj == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu.", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return; 
-            }
-            
+            Date maxDate = new Date(); 
+    
             if (endDateObj == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày kết thúc.", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return; 
+                endDateObj = maxDate; 
             }
     
-            if (startDateObj.after(endDateObj)) {
+            if (startDateObj != null && endDateObj == maxDate) {
+                System.out.println("Chỉ có ngày bắt đầu: " + sdf.format(startDateObj));
+            }
+    
+            // Kiểm tra nếu ngày bắt đầu lớn hơn ngày kết thúc
+            if (startDateObj != null && startDateObj.after(endDateObj)) {
                 JOptionPane.showMessageDialog(this, "Ngày bắt đầu không thể lớn hơn ngày kết thúc.", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 return; 
             }
     
-            String startDate = sdf.format(startDateObj);
+            String startDate = startDateObj != null ? sdf.format(startDateObj) : "Không có ngày bắt đầu";
             String endDate = sdf.format(endDateObj);
             System.out.println("Tìm kiếm ngày từ: " + startDate + " đến " + endDate);
-            
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra, vui lòng chọn ngày hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+
+    
     
 
     // Variables declaration - do not modify                     

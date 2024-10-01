@@ -169,16 +169,32 @@ searchBar1.searchTongTien.giatriden().getDocument().addDocumentListener(new Docu
 searchBar1.searchDaytoDay.giatritu().addPropertyChangeListener("date", new PropertyChangeListener() {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        performSearchByDateRange(); 
+        Date startDate = (Date) searchBar1.searchDaytoDay.giatritu().getDate();
+        Date endDate = (Date) searchBar1.searchDaytoDay.giatriden().getDate();
+        performSearchByDateRange(startDate, endDate); 
     }
 });
 
 searchBar1.searchDaytoDay.giatriden().addPropertyChangeListener("date", new PropertyChangeListener() {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        performSearchByDateRange(); 
+        Date startDate = (Date) searchBar1.searchDaytoDay.giatritu().getDate();
+        Date endDate = (Date) searchBar1.searchDaytoDay.giatriden().getDate();
+        performSearchByDateRange(startDate, endDate); 
     }
 });
+// làm mới calander
+searchBar1.lamMoiBtn.addMouseListener(new MouseAdapter() {
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // dặt null
+        searchBar1.searchDaytoDay.giatritu().setDate(null); 
+        searchBar1.searchDaytoDay.giatriden().setDate(null); 
+        
+        reloadEvent();
+    }
+});
+
 
         topPanel.add(searchBar1, BorderLayout.CENTER);
         toolBar.add(chiTietBtn);
@@ -217,25 +233,23 @@ private void performSearchByTotalAmount() {
     }
 }
 
-private void performSearchByDateRange() {
-    Date startDate = searchBar1.searchDaytoDay.giatritu().getDate();
-    Date endDate = searchBar1.searchDaytoDay.giatriden().getDate();
-
-    // Kiểm tra xem có chọn ngày bắt đầu và ngày kết thúc hay không
-    if (startDate == null || endDate == null) {
-        System.out.println("Vui lòng chọn cả hai ngày.");
-        return;
+private void performSearchByDateRange(Date startDate, Date endDate) {
+    if (startDate == null) {
+        startDate = new Date(Long.MIN_VALUE); 
     }
 
-    // Kiểm tra xem ngày bắt đầu có trước ngày kết thúc không
+    if (endDate == null) {
+        endDate = new Date(); 
+    }
+
     if (startDate.after(endDate)) {
         System.out.println("Ngày bắt đầu phải trước ngày kết thúc.");
         return;
     }
 
-    // Gọi hàm tìm kiếm theo khoảng ngày
     loadDataToTable(hdBUS.searchByDateRange(startDate, endDate));
 }
+
 
     public void loadDataToTable(ArrayList<HoaDonDTO> hdList) {
         tableModel.setRowCount(0);

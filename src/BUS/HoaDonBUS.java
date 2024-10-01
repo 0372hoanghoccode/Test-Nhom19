@@ -142,12 +142,20 @@ public class HoaDonBUS {
 
     public ArrayList<HoaDonDTO> searchByDateRange(Date startDate, Date endDate) {
         ArrayList<HoaDonDTO> result = new ArrayList<>();
+        
+        Date maxDate = new Date();
+    
+        if (startDate == null) {
+            startDate = new Date(Long.MIN_VALUE); 
+        }
+    
+        if (endDate == null) {
+            endDate = maxDate; 
+        }
     
         for (HoaDonDTO hoaDon : hoaDonList) {
-            System.out.print("tim tu ngay den ngay test");
-            Date ngayXuat = hoaDon.getNgayXuat(); // Lấy ngày xuất của hóa đơn
-            
-            // Kiểm tra nếu ngày xuất nằm trong khoảng từ ngày bắt đầu đến ngày kết thúc
+            System.out.print("Tìm từ ngày đến ngày: ");
+            Date ngayXuat = hoaDon.getNgayXuat(); 
             if (ngayXuat.compareTo(startDate) >= 0 && ngayXuat.compareTo(endDate) <= 0) {
                 result.add(hoaDon);
             }
@@ -155,6 +163,7 @@ public class HoaDonBUS {
     
         return result;
     }
+    
     
     
     
